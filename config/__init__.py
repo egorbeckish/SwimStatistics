@@ -16,6 +16,7 @@ __all__ = [
 	"BytesIO",
 	"regex",
 	"json",
+	"base64",
     "EVENT",
     "STAGE",
     "TYPE_CONTEST",

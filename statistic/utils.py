@@ -25,7 +25,7 @@ def get_sex(sex):
 
 def get_data(**kwargs):
 	for k, v in kwargs.items():
-		[kwargs[k]] = v[0].split()
+		[kwargs[k]] = v
 	
 	kwargs["style"] = get_style(kwargs["style"])
 	kwargs["sex"] = get_sex(kwargs["sex"])
@@ -48,6 +48,7 @@ def get_title(file_byte):
 	
 	regex_data = regex.finditer(EVENT, data).search().capturesdict()
 	title = get_data(**regex_data)
+	print(regex_data, title)
 
 	stage = regex.finditer(STAGE, data).search()
 	stage = get_stage(stage)

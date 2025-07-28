@@ -7,3 +7,4 @@ import pdfplumber
 from io import BytesIO
 import regex
 import json
+import base64

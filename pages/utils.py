@@ -45,11 +45,12 @@ def other_contest_params(type_contest):
 			)
 
 
-def contest_date():
-	return st.date_input(
-		'Дата проведения соревнований',
-		(datetime.datetime.now().date(), datetime.datetime.now().date()),
-		format="DD.MM.YYYY",
+def contest_year():
+	return st.selectbox(
+		'Год проведения соревнований',
+		[n for n in range(1992, datetime.datetime.now().year + 1)],
+		index=None,
+		placeholder="Select contest year...",
 	)
 
 
@@ -72,17 +73,15 @@ def load_files():
 
 
 def save_path(**kwargs):
-	kwargs["date"] = f"{kwargs["date"][0].strftime("%d.%m.%Y")}-{kwargs["date"][1].strftime("%d.%m.%Y")}"
-
 	match kwargs["contest"]:
 		case "World Championship":
-			pass
+			return fr"contest\{kwargs["contest"]}\{kwargs["other_params"]}m\{kwargs["year"]}\{kwargs["city"]}\{kwargs["title"]}"
 
 		case "World Cup":
-			pass
+			return fr"contest\{kwargs["contest"]}\{kwargs["other_params"][0]}m\{kwargs["year"]}\{kwargs["city"]} {kwargs["other_params"][1]} stage\{kwargs["title"]}"
 
 		case _:
-			return fr"contest\{kwargs["contest"]}\{kwargs["city"]}\{kwargs["other_params"]}\{kwargs["date"]}\{kwargs["title"]}"
+			return fr"contest\{kwargs["contest"]}\{kwargs["year"]}\{kwargs["city"]}\{kwargs["title"]}"
 
 	return kwargs
 
@@ -96,3 +95,29 @@ def save_file(file_bytes, save_path):
 	make_dir(save_path)
 	with open(save_path, "wb") as file:
 		file.write(file_bytes)
+
+
+def exist_path(path):
+	return os.path.exists(path)
+
+
+def warninng_load_file():
+	st.warning(
+		"Загрузите файлы",
+		icon="⚠️"
+	)
+	
+
+def show_file(_bytes):
+	if _bytes:
+		base64_pdf = base64.b64encode(_bytes).decode("utf-8")
+
+		# Встраиваем PDF через HTML
+		pdf_display = f"""
+		<iframe src="data:application/pdf; base64,{base64_pdf}" 
+			width="100%" 
+			height="800px" 
+			style="border: none;">
+		</iframe>
+		"""
+		st.markdown(pdf_display, unsafe_allow_html=True)
