@@ -14,6 +14,7 @@ def type_contest():
 	return selectbox(
 		"Выберите тип соревнований",
 		TYPE_CONTEST,
+		"Select contest..."
 	)
 
 
@@ -23,11 +24,13 @@ def other_contest_params(type_contest):
 			pool = selectbox(
 				"Выберите длину бассейна",
 				POOL_DISTANCE,
+				"Select pool..."
 			)
 
 			stage = selectbox(
 				"Выберите этап кубка мира",
 				WORLD_CUP_STAGE,
+				"Select stage..."
 			)
 			
 			return pool, stage
@@ -36,19 +39,22 @@ def other_contest_params(type_contest):
 			return selectbox(
 				"Выберите пол",
 				SEX,
+				"Select sex..."
 			)
 		
 		case "World Championship":
 			return selectbox(
 				"Выберите длину бассейна",
 				POOL_DISTANCE,
+				"Select pool..."
 			)
 
 
 def contest_year():
 	return selectbox(
 		'Год проведения соревнований',
-		[n for n in range(1992, datetime.datetime.now().year + 1)][::-1]
+		[n for n in range(1992, datetime.datetime.now().year + 1)][::-1],
+		"Select year..."
 	)
 
 
@@ -116,27 +122,32 @@ def get_data(*args):
 def show_contest():
 	return selectbox(
 		"Выберите прошедшие соревнования",
-		get_data()
+		get_data(),
+		"Select contest..."
 	)
+
 
 def show_info(contest):
 	match contest:
 		case "World Championship":
 			pool = selectbox(
 				"Выберите бассейн, в котором проходили соревнования",
-				get_data(contest)
+				get_data(contest),
+				"Select pool..."
 			)
 
 			year = selectbox(
 				"Выберите год проведения соревнования",
-				get_data(contest, pool) if pool else None
+				get_data(contest, pool) if pool else None,
+				"Select year..."
 			)
 
 			[city] = get_data(contest, pool, year) if year else [None]
 
 			files = selectbox(
 				"Выберите результат",
-				get_data(contest, pool, year, city) if year else None
+				get_data(contest, pool, year, city) if year else None,
+				"Select file..."
 			)
 
 			return contest, pool, year, city, files
@@ -145,22 +156,26 @@ def show_info(contest):
 		case "World Cup":
 			pool = selectbox(
 				"Выберите бассейн, в котором проходили соревнования",
-				get_data(contest)
+				get_data(contest),
+				"Select pool",
 			)
 
 			year = selectbox(
 				"Выберите год проведения соревнования",
-				get_data(contest, pool) if pool else None
+				get_data(contest, pool) if pool else None,
+				"Select year",
 			)
 
 			stage = selectbox(
 				"Выберите стадию",
-				get_data(contest, pool, year) if year else None
+				get_data(contest, pool, year) if year else None,
+				"Select stage..."
 			)
 
 			files = selectbox(
 				"Выберите результат",
-				get_data(contest, pool, year, stage) if stage else None
+				get_data(contest, pool, year, stage) if stage else None,
+				"Select file..."
 			)
 
 			return contest, pool, year, stage, files
@@ -168,19 +183,22 @@ def show_info(contest):
 		case "NCAA":
 			year = selectbox(
 				"Выберите год проведения соревнования",
-				get_data(contest)
+				get_data(contest),
+				"Select year"
 			)
 
 			[city] = get_data(contest, year) if year else [None]
 
 			sex = selectbox(
 				"Выберите кто соревнуется",
-				get_data(contest, year, city) if city else None
+				get_data(contest, year, city) if city else None,
+				"Select sex..."
 			)
 
 			files = selectbox(
 				"Выберите результат",
-				get_data(contest, year, city, sex) if sex else None
+				get_data(contest, year, city, sex) if sex else None,
+				"Select file..."
 			)
 
 			return contest, year, city, sex, files
@@ -188,14 +206,16 @@ def show_info(contest):
 	if contest in ["Olympic Games", "University"]:
 		year = selectbox(
 			"Выберите год проведения соревнования",
-			get_data(contest)
+			get_data(contest),
+			"Select year..."
 		)
 
 		[city] = get_data(contest, year) if year else [None]
 
 		files = selectbox(
 			"Выберите результат",
-			get_data(contest, year, city) if city else None
+			get_data(contest, year, city) if city else None,
+			"Select file..."
 		)
 
 		return contest, year, city, files
@@ -219,3 +239,12 @@ def show_file(*args):
 	</iframe>
 	"""
 	st.markdown(pdf_display, unsafe_allow_html=True)
+
+
+def get_text(*args):
+	with pdfplumber.open(fr"contest\{"\\".join(args)}") as file:
+		return "\n".join([page.extract_text() for page in file.pages])
+	
+
+def get_results(file_bytes, *args):
+	pass

@@ -23,4 +23,5 @@ __all__ = [
     "WORLD_CUP_STAGE",
     "SEX",
 	"POOL_DISTANCE",
+	"REGEX_DISTANCE",
 ]

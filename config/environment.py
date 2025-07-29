@@ -11,3 +11,7 @@ TYPE_CONTEST = PAGES["TYPE_CONTEST"].split("\n")
 WORLD_CUP_STAGE = PAGES["WORLD_CUP_STAGE"].split("\n")
 SEX = PAGES["SEX"].split("\n")
 POOL_DISTANCE = PAGES["POOL_DISTANCE"].split("\n")
+
+
+with open(r".env\regex_distance.json") as REGEX_DISTANCE:
+	REGEX_DISTANCE = json.load(REGEX_DISTANCE)
