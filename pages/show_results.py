@@ -12,7 +12,10 @@ else:
 	columns = st.columns([1, 3])
 
 	with columns[0]:
-		pass
+		contest = show_contest()
+		info = show_info(contest)
 			
 	with columns[1]:
-		pass
+		if info:
+			if all([item != None for item in info]):
+				show_file(*info)

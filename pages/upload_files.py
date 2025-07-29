@@ -1,6 +1,10 @@
 from pages import *
 
 
+st.set_page_config(
+	layout="centered"
+)
+
 if "uploader_key" not in st.session_state:
 	st.session_state.uploader_key = 0
 
