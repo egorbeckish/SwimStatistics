@@ -42,8 +42,8 @@ def join_title(**kwargs):
 			return f"{kwargs["distance"]} {kwargs["unit"]} {kwargs["style"]} {kwargs["sex"]} {kwargs["stage"]}.pdf"
 		
 
-def get_title(file_byte):
-	with pdfplumber.open(BytesIO(file_byte)) as data:
+def get_title(file_bytes):
+	with pdfplumber.open(BytesIO(file_bytes)) as data:
 		data = data.pages[0].extract_text()
 	
 	regex_data = regex.finditer(EVENT, data).search().capturesdict()
@@ -54,3 +54,21 @@ def get_title(file_byte):
 
 	title["stage"] = stage
 	return join_title(**title)
+
+
+def get_regex_data(text, **kwargs):
+	if kwargs["contest"] in ["World Championship", "World Cup"]:
+		pass
+
+	elif kwargs["contest"] in ["Olympic Games", "University"]:
+		pattern = REGEX_DISTANCE[kwargs["unit"]]["50"][kwargs["distance"]][kwargs["stage"]]
+		data = [data for data in regex.finditer(pattern, text)]
+
+	elif kwargs["contest"] == "NCAA":
+		pass
+
+	if kwargs["unload"]:
+		for i in range(len(data)):
+			data[i] = data[i].capturesdict()
+	
+	return data

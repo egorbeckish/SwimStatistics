@@ -241,10 +241,23 @@ def show_file(*args):
 	st.markdown(pdf_display, unsafe_allow_html=True)
 
 
-def get_text(*args):
+def show_text_file(*args):
 	with pdfplumber.open(fr"contest\{"\\".join(args)}") as file:
 		return "\n".join([page.extract_text() for page in file.pages])
-	
 
-def get_results(file_bytes, *args):
-	pass
+
+def parse_title_file(*args):
+	contest = args[0]
+	distance, *_, stage = args[-1][:-4].split()
+	
+	if len(distance.split()) > 1:
+		distance = distance.split()
+		return distance[1], distance[0], stage
+	
+	return {
+		"contest": contest,
+		"unit": distance[-1],
+		"distance": distance[:-1],
+		"stage": stage,
+		"unload": False,
+	}

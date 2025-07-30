@@ -11,7 +11,6 @@ if not exist_path("contest"):
 else:
 	columns = st.columns([1, 3])
 	with columns[0]:
-		
 		_columns = st.columns([6, 1])
 		with _columns[0]:
 			contest = show_contest()
@@ -19,15 +18,15 @@ else:
 		with _columns[1]:
 			for _ in range(2):
 				st.write("")
-			text = st.toggle("l", help="Показать текстом", label_visibility="hidden")
-		
+			unload = st.toggle("l", help="Выгрузка", label_visibility="hidden")
+
 		info = show_info(contest)
-			
+	
 	with columns[1]:
 		if info:
 			if all([item != None for item in info]):
-				if text:
-					st.code(show_text_file(*info), language=None)
-				
-				else:
-					show_file(*info)
+				text = show_text_file(*info)
+				regex_data = parse_title_file(*info)
+				regex_data["unload"] = unload
+				# st.write(get_regex_data(text, **regex_data))
+				print(get_regex_data(text, **regex_data))

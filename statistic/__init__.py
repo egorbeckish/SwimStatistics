@@ -11,6 +11,8 @@ __all__ = [
 	"BytesIO",
 	"regex",
 	"get_title",
+	"get_regex_data",
 	"EVENT",
 	"STAGE",
+	"REGEX_DISTANCE",
 ]
