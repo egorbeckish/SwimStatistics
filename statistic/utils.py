@@ -71,4 +71,5 @@ def get_regex_data(text, **kwargs):
 		for i in range(len(data)):
 			data[i] = data[i].capturesdict()
 	
+	st.code(pattern, language=None)
 	return data

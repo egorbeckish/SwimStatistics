@@ -13,6 +13,7 @@ __all__ = [
 	"datetime",
 	"pdfplumber",
 	"base64",
+	"regex",
 	"type_contest",
 	"other_contest_params",
 	"contest_year",
