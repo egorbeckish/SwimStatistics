@@ -28,4 +28,4 @@ else:
 				text = show_text_file(*info)
 				regex_data = parse_title_file(*info)
 				regex_data["unload"] = unload
-				st.write(get_regex_data(text, **regex_data))
+				get_regex_data(text, **regex_data)

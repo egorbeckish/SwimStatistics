@@ -245,7 +245,7 @@ def show_text_file(*args):
 	with pdfplumber.open(fr"contest\{"\\".join(args)}") as file:
 		text = "\n".join([page.extract_text() for page in file.pages])
 
-	return regex.sub(r"\s\(\d\)", "", text)
+	return regex.sub(r"\s\(\=?\d\)", "", text)
 
 
 def parse_title_file(*args):
