@@ -20,9 +20,21 @@ if files:
 	for file in files:
 		file_bytes = file.getvalue()
 		title = get_title(file_bytes)
-		# data = 
-	# 	path = save_path(contest=contest, other_params=other_params, year=year, city=city, title=title)
-	# 	save_file(file_bytes, path)
+		path = save_path(
+			contest=contest, 
+			other_params=other_params, 
+			year=year, city=city, 
+			title=title
+		)
+		save_file(file_bytes, path)
+		distance = get_distance_title(title)
+		get_results(
+			contest=contest, 
+			pool=other_params if other_params else None, 
+			distance=distance,
+			path=path,
+			title=title,
+		)
 	
 	
 	# st.session_state.uploader_key += 1

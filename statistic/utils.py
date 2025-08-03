@@ -23,7 +23,7 @@ def get_sex(sex):
 	return sex
 
 
-def get_data(**kwargs):
+def get_title_data(**kwargs):
 	for k, v in kwargs.items():
 		[kwargs[k]] = v
 	
@@ -47,7 +47,7 @@ def get_title(file_bytes):
 		data = data.pages[0].extract_text()
 	
 	regex_data = regex.finditer(EVENT, data).search().capturesdict()
-	title = get_data(**regex_data)
+	title = get_title_data(**regex_data)
 
 	stage = regex.finditer(STAGE, data).search()
 	stage = get_stage(stage)
@@ -56,20 +56,5 @@ def get_title(file_bytes):
 	return join_title(**title)
 
 
-def get_regex_data(text, **kwargs):
-	if kwargs["contest"] in ["World Championship", "World Cup"]:
-		pass
-
-	elif kwargs["contest"] in ["Olympic Games", "University"]:
-		pattern = REGEX_DISTANCE[kwargs["unit"]]["50"][kwargs["distance"]][kwargs["stage"]]
-		data = [data for data in regex.finditer(pattern, text)]
-
-	elif kwargs["contest"] == "NCAA":
-		pass
-
-	if kwargs["unload"]:
-		for i in range(len(data)):
-			data[i] = data[i].capturesdict()
-	
-	st.write(data)
-	st.code(pattern, language=None)
+def get_results(**kwargs):
+	pass
