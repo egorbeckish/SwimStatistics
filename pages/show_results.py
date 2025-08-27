@@ -28,7 +28,6 @@ else:
 			if all([item != None for item in info]):
 				if text:
 					st.code(show_text_file(*info), language=None)
-					print(show_text_file(*info))
 				
 				else:
 					show_file(*info)

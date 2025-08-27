@@ -26,16 +26,7 @@ if files:
 			year=year, city=city, 
 			title=title
 		)
-		save_file(file_bytes, path)
-		distance = get_distance_title(title)
-		get_results(
-			contest=contest, 
-			pool=other_params if other_params else None, 
-			distance=distance,
-			path=path,
-			title=title,
-		)
+		save_file(file_bytes, path)	
 	
-	
-	# st.session_state.uploader_key += 1
-	# st.rerun()
+	st.session_state.uploader_key += 1
+	st.rerun()
