@@ -4,6 +4,10 @@
 ```
 📦SwimStatistics
  ┣ 📂config
+ ┃ ┣ 📂.env
+ ┃ ┃ ┗ 📜.env.pages
+ ┃ ┣ 📜env.py
+ ┃ ┗ 📜__init__.py
  ┣ 📂scripts
  ┣ 📂src
  ┃ ┣ 📂.streamlit
@@ -19,6 +23,7 @@
  ┃ ┃ ┃ ┗ 📜omega_results.py
  ┃ ┃ ┣ 📂page
  ┃ ┃ ┃ ┗ 📜validates.py
+ ┃ ┃ ┣ 📜utils_.py
  ┃ ┃ ┗ 📜__init__.py
  ┃ ┗ 📜main.py
  ┗ 📜README.md
