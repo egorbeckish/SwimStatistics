@@ -7,8 +7,8 @@ from lib import (
 
 
 from utils import (
-	validate_link, 
-	save_omega_results
+	save_omega_results,
+	validate_input
 )
 
 
@@ -22,7 +22,8 @@ st.set_page_config(
 
 columns = st.columns([.9, .1], gap="large")
 load_env()
-pprint(dict(st.session_state))
+# pprint(dict(st.session_state))
+
 
 with columns[0]:
 	st.title("Load Contest")
@@ -62,7 +63,12 @@ with columns[0]:
 
 		place = st.text_input(
 			"Place",
-			key=st.session_state["widget_place"],
+			key="widget_place",
+			on_change=validate_input,
+			args=(
+				"widget_place",
+				r"[\D]+\s[A-Z]{3}"
+			),
 			placeholder="Write place contest... For example: Hungary HUN",
 			disabled=False if contest else True
 		)
@@ -79,7 +85,7 @@ with columns[0]:
 			"Load files",
 			accept_multiple_files=True,
 			key=st.session_state["widget_file_uploader"],
-			disabled=not all([contest, stage, pool, place, date])
+			disabled=not all([contest, stage, pool, not st.session_state["widget_access_input"], date])
 		)
 
 		if st.button(
@@ -92,9 +98,12 @@ with columns[0]:
 			st.session_state["widget_contest"] = uuid.uuid4()
 			st.session_state["widget_stage"] = uuid.uuid4()
 			st.session_state["widget_pool"] = uuid.uuid4()
-			st.session_state["widget_place"] = uuid.uuid4()
 			st.session_state["widget_date"] = uuid.uuid4()
 			st.session_state["widget_file_uploader"] = uuid.uuid4()
+
+			del st.session_state["widget_place"]
+			st.session_state.widget_place = ""
+			st.session_state.access_input = True
 			st.rerun()
 	
 	with omega_load:
@@ -103,25 +112,26 @@ with columns[0]:
 		omega_link = st.text_input(
 			"Omega Link",
 			key="widget_link_input",
-			on_change=validate_link,
+			on_change=validate_input,
 			args=(
+				"widget_link_input",
 				r"https:\/\/www.omegatiming\.com\/[\d]{4}\/[A-Za-z0-9\-]+",
 			)
 		)
 
 		if st.button(
 			"Get",
-			disabled=st.session_state["widget_access_link"]
+			disabled=st.session_state["widget_access_input"]
 		):
 			
 			with st.spinner(show_time=True):
 				save_omega_results(omega_link)
 
 
-			del st.session_state["widget_link_input"]
-			del st.session_state["widget_access_link"]
-			st.session_state.link_input = ""
-			st.session_state.access_link = True
+			del st.session_state["widget_omega_link"]
+			del st.session_state["widget_access_input"]
+			st.session_state.omega_link = ""
+			st.session_state.access_input = True
 			st.rerun()
 
 

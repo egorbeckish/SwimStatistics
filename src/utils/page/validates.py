@@ -4,9 +4,9 @@ from lib import (
 )
 
 
-def validate_link(pattern):
-	link_input = st.session_state["link_input"]
-
-	if re.search(pattern, link_input):
-		st.session_state["access_link"] = False
+def validate_input(widget, pattern):
+	if re.search(pattern, st.session_state[widget]):
+		st.session_state["widget_access_input"] = False
 	
+	else:
+		st.session_state["widget_access_input"] = True
