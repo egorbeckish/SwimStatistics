@@ -103,7 +103,7 @@ with columns[0]:
 
 			del st.session_state["widget_place"]
 			st.session_state.widget_place = ""
-			st.session_state.access_input = True
+			st.session_state.widget_access_input = True
 			st.rerun()
 	
 	with omega_load:
@@ -111,10 +111,10 @@ with columns[0]:
 	
 		omega_link = st.text_input(
 			"Omega Link",
-			key="widget_link_input",
+			key="widget_omega_link",
 			on_change=validate_input,
 			args=(
-				"widget_link_input",
+				"widget_omega_link",
 				r"https:\/\/www.omegatiming\.com\/[\d]{4}\/[A-Za-z0-9\-]+",
 			)
 		)
@@ -129,9 +129,8 @@ with columns[0]:
 
 
 			del st.session_state["widget_omega_link"]
-			del st.session_state["widget_access_input"]
-			st.session_state.omega_link = ""
-			st.session_state.access_input = True
+			st.session_state.widget_omega_link = ""
+			st.session_state.widget_access_input = True
 			st.rerun()
 
 
