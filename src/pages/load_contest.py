@@ -12,17 +12,12 @@ from utils import (
 )
 
 
-from config import load_env
-
-
 st.set_page_config(
 	layout="wide"
 )
 
 
 columns = st.columns([.9, .1], gap="large")
-load_env()
-# pprint(dict(st.session_state))
 
 
 with columns[0]:
@@ -103,7 +98,7 @@ with columns[0]:
 
 			del st.session_state["widget_place"]
 			st.session_state.widget_place = ""
-			st.session_state.widget_access_input = True
+			st.session_state["widget_access_input"] = True
 			st.rerun()
 	
 	with omega_load:
@@ -130,7 +125,7 @@ with columns[0]:
 
 			del st.session_state["widget_omega_link"]
 			st.session_state.widget_omega_link = ""
-			st.session_state.widget_access_input = True
+			st.session_state["widget_access_input"] = True
 			st.rerun()
 
 

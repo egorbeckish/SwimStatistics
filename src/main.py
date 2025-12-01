@@ -1,9 +1,13 @@
 from lib import st
+from config import load_env
 
 
 st.set_page_config(
 	layout="wide"
 )
+
+load_env()
+# pprint(dict(st.session_state))
 
 columns = st.columns([.9, .1], gap="large")
 
