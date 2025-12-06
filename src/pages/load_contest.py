@@ -114,13 +114,22 @@ with columns[0]:
 			)
 		)
 
+		pool = st.selectbox(
+			"Pool (meters)",
+			["25", "50"],
+			None,
+			key=st.session_state["widget_pool"],
+			placeholder="Choose pool...",
+			disabled=False if omega_link else True
+		)
+
 		if st.button(
 			"Get",
-			disabled=st.session_state["widget_access_input"]
+			disabled=not all([pool, not st.session_state["widget_access_input"]])
 		):
 			
 			with st.spinner(show_time=True):
-				save_omega_results(omega_link)
+				save_omega_results(omega_link, pool)
 
 
 			del st.session_state["widget_omega_link"]

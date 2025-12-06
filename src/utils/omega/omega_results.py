@@ -4,6 +4,7 @@ from lib import (
 	requests,
 	BeautifulSoup,
 	re,
+	regex,
 	pprint,
 )
 
@@ -47,11 +48,11 @@ def get_period_contest(html: BeautifulSoup):
 
 
 def type_contest(contest):
-	contest_regex = re.search(
-		r"(?P<type>World|European)\sAquatics\s(?:(?:(?P<junior>Junior)|(?:Short\sCourse))\s)?(?:(?:Swimming)\s)?(?P<contest>Championships|World\sCup)",
+	contest_regex = regex.search(
+		r"(?P<type>World|European)\sAquatics\s(?:(?:(?P<junior>Junior)|(?P<pool>Short\sCourse))\s)?(?:(?:Swimming)\s)?(?P<contest>Championships|World\sCup)",
 		contest
 	)
-
+	
 	if contest_regex:
 		contest = contest_regex.groupdict()
 		if contest["type"] in contest["contest"]:
@@ -78,8 +79,10 @@ def get_metadata(html: BeautifulSoup):
 	return contest | period_contest | place
 
 
-def save_omega_results(url):
+def save_omega_results(url, pool):
 	page = get_page(url)
 	html = convert_str_to_html(page)
 	metadata = get_metadata(html)
+	metadata["pool"] = pool
+	
 	pprint(metadata, sort_dicts=False)
