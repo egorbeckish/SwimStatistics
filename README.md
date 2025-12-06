@@ -26,6 +26,6 @@
  ┃ ┃ ┣ 📜utils_.py
  ┃ ┃ ┗ 📜__init__.py
  ┃ ┗ 📜main.py
- ┣ 📜main.ipynb
  ┗ 📜README.md
+
 ```
