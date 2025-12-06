@@ -116,7 +116,7 @@ with columns[0]:
 
 		pool = st.selectbox(
 			"Pool (meters)",
-			["25", "50"],
+			["25m", "50m"],
 			None,
 			key=st.session_state["widget_pool"],
 			placeholder="Choose pool...",
@@ -135,6 +135,7 @@ with columns[0]:
 			del st.session_state["widget_omega_link"]
 			st.session_state.widget_omega_link = ""
 			st.session_state["widget_access_input"] = True
+			st.session_state["widget_pool"] = uuid.uuid4()
 			st.rerun()
 
 
