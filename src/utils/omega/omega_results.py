@@ -1,3 +1,4 @@
+from config import CONTEST_PATH
 from lib import (
 	iso3166,
 	datetime,
@@ -6,6 +7,8 @@ from lib import (
 	re,
 	regex,
 	pprint,
+	os,
+	json
 )
 
 
@@ -15,7 +18,6 @@ def get_page(url):
 
 def get_html(url):
 	page = get_page(url)
-	
 	return BeautifulSoup(page, "html.parser")
 
 
@@ -42,8 +44,8 @@ def get_period_contest(html: BeautifulSoup):
 	start, finish = str_to_datetime(start), str_to_datetime(finish)
 	
 	return {
-		"start": start,
-		"finish": finish,
+		"start": start.isoformat(),
+		"finish": finish.isoformat(),
 		"year": finish.year
 	}
 
@@ -87,20 +89,90 @@ def get_days(html: BeautifulSoup):
 
 
 def get_events(block: BeautifulSoup):
-	return [row for row in block.find_all("div", class_="row") if row.find("p", class_="round").text]
+	return [row for row in block.find_all("div", class_="row")[1:] if row.find("p", class_="round").text]
 
 
-def save_pdf(html: BeautifulSoup):
+def get_event_regex(event):
+	event_regex = re.search(
+		r"(?P<sex>[a-zA-Z]+\'s)\s(?P<style>Freestyle|Backstroke|Butterfly|Breaststroke|Medley)\s(?P<distance>[\d]{2,4}m)\s+((Slowest|Fastest)\s)?(?P<stage>Heats|Semi-finals|Final|Semifinals|Heat)\s?(?P<swim_off>(?:Swim-off|Swim-Off))?", 
+		event
+	)
+
+	event_regex = event_regex.groupdict() if event_regex else None
+	return None if (not event_regex or event_regex["swim_off"]) else event_regex
+
+
+def get_event(row: BeautifulSoup):
+	event = get_event_regex(row.find("p", class_="round").text)
+
+	if event:
+		event["style"] = "IM" if event["style"] == "Medley" else event["style"].lower()
+		return f"{event["distance"]} {event["style"]} {event["sex"]} {event["stage"]}"
+
+	return event
+
+
+def get_link(row: BeautifulSoup):
+	return f"https://www.omegatiming.com{row.find_all("a")[-1]["href"]}"
+
+
+def get_content(link):
+	return requests.get(link).content
+
+
+def create_dirs(path):
+	os.makedirs(f"{CONTEST_PATH}/{path}", exist_ok=True)
+
+
+def write_pdf(path, title, content):
+	with open(f"{CONTEST_PATH}/{path}/{title}.pdf", "wb") as file:
+		file.write(content)
+
+
+def get_path(metadata):
+	return f"{metadata["contest"]}/{metadata["pool"]}/{metadata["year"]}"
+
+
+def save_metadata(path, metadata):
+	with open(f"{CONTEST_PATH}/{path}/metadata.json", "w", encoding="utf-8") as file:
+		json.dump(metadata, file, indent=4)
+
+
+def create_regex_json(path):
+	with open(f"{CONTEST_PATH}/{path}/parse.json", "w", encoding="utf-8") as file:
+		json.dump(
+			{
+				"50": "",
+				"100": "",
+				"200": "",
+				"400": "",
+				"800": "",
+				"1500": ""
+			}, 
+			file, 
+			indent=4
+		)
+
+
+def save_files(html: BeautifulSoup, metadata):
 	block_days = get_days(html)
-
-	for block_day in block_days:
-		for a in block_day.find_all("div", class_="row")[1:]:
-			print(a)
-			...
-		
+	path = get_path(metadata)
 	
+	create_dirs(path)
+	save_metadata(path, metadata)
+	create_regex_json(path)
+	
+	for block_day in block_days:
+		events = get_events(block_day)
 
-def save_omega_results(url, pool):
+		for row in events:
+			if event := get_event(row):
+				link = get_link(row)
+				pdf = get_content(link)
+				write_pdf(path, event, pdf)
+
+
+def omega_save_results(url, pool):
 	html = get_html(url)
 	metadata = get_metadata(html, pool)
-	save_pdf(html)
+	save_files(html, metadata)

@@ -7,7 +7,7 @@ from lib import (
 
 
 from utils import (
-	save_omega_results,
+	omega_save_results,
 	validate_input
 )
 
@@ -111,7 +111,8 @@ with columns[0]:
 			args=(
 				"widget_omega_link",
 				r"https:\/\/www.omegatiming\.com\/[\d]{4}\/[A-Za-z0-9\-]+",
-			)
+			),
+			placeholder="Write link..."
 		)
 
 		pool = st.selectbox(
@@ -129,7 +130,7 @@ with columns[0]:
 		):
 			
 			with st.spinner(show_time=True):
-				save_omega_results(omega_link, pool)
+				omega_save_results(omega_link, pool)
 
 
 			del st.session_state["widget_omega_link"]

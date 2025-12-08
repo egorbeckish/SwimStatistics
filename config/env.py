@@ -7,6 +7,9 @@ from lib import (
 )
 
 
+CONTEST_PATH = f"{os.path.dirname(os.getcwd())}/contest"
+
+
 def load_env():
 	if st.session_state:
 		return
