@@ -19,10 +19,12 @@
  ┃ ┃ ┣ 📜exit.py
  ┃ ┃ ┗ 📜load_contest.py
  ┃ ┣ 📂utils
- ┃ ┃ ┣ 📂omega
- ┃ ┃ ┃ ┗ 📜omega_results.py
  ┃ ┃ ┣ 📂page
  ┃ ┃ ┃ ┗ 📜validates.py
+ ┃ ┃ ┣ 📂results
+ ┃ ┃ ┃ ┣ 📜omega_results.py
+ ┃ ┃ ┃ ┣ 📜standart_results.py
+ ┃ ┃ ┃ ┗ 📜__init__.py
  ┃ ┃ ┗ 📜__init__.py
  ┃ ┗ 📜main.py
  ┗ 📜README.md

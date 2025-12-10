@@ -7,8 +7,9 @@ from lib import (
 
 
 from utils import (
+	validate_input,
 	omega_save_results,
-	validate_input
+	standart_save_results
 )
 
 
@@ -30,7 +31,7 @@ with columns[0]:
 	with standart_load:
 		contest = st.selectbox(
 			"Contest",
-			["World Cup"],
+			["World Cup", "World Championship"],
 			None,
 			key=st.session_state["widget_contest"],
 			placeholder="Choose contest...",
@@ -76,19 +77,27 @@ with columns[0]:
 			disabled=False if contest else True
 		)
 
-		load_files = st.file_uploader(
-			"Load files",
-			accept_multiple_files=True,
-			key=st.session_state["widget_file_uploader"],
-			disabled=not all([contest, stage, pool, not st.session_state["widget_access_input"], date])
-		)
+		# load_files = st.file_uploader(
+		# 	"Load files",
+		# 	accept_multiple_files=True,
+		# 	key=st.session_state["widget_file_uploader"],
+		# 	disabled=not all([contest, stage if contest == "World Cup" else True, pool, not st.session_state["widget_access_input"], date])
+		# )
+
+		load_files = all([contest, stage if contest == "World Cup" else True, pool, not st.session_state["widget_access_input"], date])
 
 		if st.button(
 			"Load",
 			disabled=False if load_files else True
 		):
 			with st.spinner(show_time=True):
-				pass
+				standart_save_results(
+					contest=contest,
+					stage=stage,
+					pool=pool,
+					place=place,
+					date=date
+				)
 			
 			st.session_state["widget_contest"] = uuid.uuid4()
 			st.session_state["widget_stage"] = uuid.uuid4()
@@ -99,6 +108,7 @@ with columns[0]:
 			del st.session_state["widget_place"]
 			st.session_state.widget_place = ""
 			st.session_state["widget_access_input"] = True
+			
 			st.rerun()
 	
 	with omega_load:
@@ -115,6 +125,15 @@ with columns[0]:
 			placeholder="Write link..."
 		)
 
+		if "cup" in omega_link:
+			stage = st.selectbox(
+				"Stage Cup",
+				["I", "II", "III"],
+				None,
+				key=st.session_state["widget_stage"],
+				placeholder="Choose stage...",
+			)
+
 		pool = st.selectbox(
 			"Pool (meters)",
 			["25m", "50m"],
@@ -123,20 +142,23 @@ with columns[0]:
 			placeholder="Choose pool...",
 			disabled=False if omega_link else True
 		)
-
+		
 		if st.button(
 			"Get",
-			disabled=not all([pool, not st.session_state["widget_access_input"]])
+			disabled=not all([not st.session_state["widget_access_input"], stage if "cup" in omega_link else True, pool])
 		):
 			
 			with st.spinner(show_time=True):
-				omega_save_results(omega_link, pool)
+				omega_save_results(omega_link, pool, stage)
 
 
 			del st.session_state["widget_omega_link"]
+			
 			st.session_state.widget_omega_link = ""
 			st.session_state["widget_access_input"] = True
+			st.session_state["widget_stage"] = uuid.uuid4()
 			st.session_state["widget_pool"] = uuid.uuid4()
+			
 			st.rerun()
 
 

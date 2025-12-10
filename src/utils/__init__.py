@@ -1,2 +1,5 @@
 from .page.validates import validate_input
-from .omega.omega_results import omega_save_results
+from .results import (
+	omega_save_results,
+	standart_save_results
+)

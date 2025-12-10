@@ -24,3 +24,5 @@ def load_env():
 
 	for k, v in envirements.items():
 		st.session_state[k.lower()] = v if v == "" else literal_eval(v)
+
+	st.toast("Данные получены", icon="✅")
