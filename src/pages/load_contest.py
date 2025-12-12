@@ -8,6 +8,7 @@ from lib import (
 
 from utils import (
 	validate_input,
+	exist_city,
 	omega_save_results,
 	standart_save_results
 )
@@ -51,7 +52,7 @@ with columns[0]:
 				"Pool",
 				["25m", "50m", "25y", "50y"],
 				None,
-				key=st.session_state["widget_pool"],
+				key=st.session_state["widget_standart_pool"],
 				help="m - meters, y - yard",
 				placeholder="Choose pool...",
 				disabled=False if contest else True
@@ -60,12 +61,11 @@ with columns[0]:
 		place = st.text_input(
 			"Place",
 			key="widget_place",
-			on_change=validate_input,
+			on_change=exist_city,
 			args=(
 				"widget_place",
-				r"[\D]+\s[A-Z]{3}"
 			),
-			placeholder="Write place contest... For example: Hungary HUN",
+			placeholder="Write place/city contest...",
 			disabled=False if contest else True
 		)
 
@@ -101,13 +101,13 @@ with columns[0]:
 			
 			st.session_state["widget_contest"] = uuid.uuid4()
 			st.session_state["widget_stage"] = uuid.uuid4()
-			st.session_state["widget_pool"] = uuid.uuid4()
+			st.session_state["widget_standart_pool"] = uuid.uuid4()
 			st.session_state["widget_date"] = uuid.uuid4()
 			st.session_state["widget_file_uploader"] = uuid.uuid4()
+			st.session_state["widget_access_input"] = True
 
 			del st.session_state["widget_place"]
 			st.session_state.widget_place = ""
-			st.session_state["widget_access_input"] = True
 			
 			st.rerun()
 	
@@ -138,7 +138,7 @@ with columns[0]:
 			"Pool (meters)",
 			["25m", "50m"],
 			None,
-			key=st.session_state["widget_pool"],
+			key=st.session_state["widget_omega_pool"],
 			placeholder="Choose pool...",
 			disabled=False if omega_link else True
 		)
@@ -153,11 +153,12 @@ with columns[0]:
 
 
 			del st.session_state["widget_omega_link"]
-			
 			st.session_state.widget_omega_link = ""
+			
 			st.session_state["widget_access_input"] = True
 			st.session_state["widget_stage"] = uuid.uuid4()
 			st.session_state["widget_pool"] = uuid.uuid4()
+			st.session_state["widget_omega_pool"] = uuid.uuid4()
 			
 			st.rerun()
 

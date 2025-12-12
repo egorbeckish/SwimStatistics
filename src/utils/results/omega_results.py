@@ -7,8 +7,14 @@ from lib import (
 	re,
 	regex,
 	pprint,
-	os,
-	json
+)
+
+from .utils import (
+	create_dirs,
+	write_pdf,
+	get_path,
+	save_metadata,
+	create_regex_json,
 )
 
 
@@ -123,40 +129,6 @@ def get_content(link):
 	return requests.get(link).content
 
 
-def create_dirs(path):
-	os.makedirs(f"{CONTEST_PATH}/{path}", exist_ok=True)
-
-
-def write_pdf(path, title, content):
-	with open(f"{CONTEST_PATH}/{path}/{title}.pdf", "wb") as file:
-		file.write(content)
-
-
-def get_path(metadata):
-	return f"{metadata["contest"]}/{metadata["pool"]}/{metadata["year"]}"
-
-
-def save_metadata(path, metadata):
-	with open(f"{CONTEST_PATH}/{path}/metadata.json", "w", encoding="utf-8") as file:
-		json.dump(metadata, file, indent=4)
-
-
-def create_regex_json(path):
-	with open(f"{CONTEST_PATH}/{path}/parse.json", "w", encoding="utf-8") as file:
-		json.dump(
-			{
-				"50": "",
-				"100": "",
-				"200": "",
-				"400": "",
-				"800": "",
-				"1500": ""
-			}, 
-			file, 
-			indent=4
-		)
-
-
 def save_files(html: BeautifulSoup, metadata):
 	block_days = get_days(html)
 	path = get_path(metadata)
@@ -165,18 +137,18 @@ def save_files(html: BeautifulSoup, metadata):
 	save_metadata(path, metadata)
 	create_regex_json(path)
 	
-	for block_day in block_days:
-		events = get_events(block_day)
+	# for block_day in block_days:
+	# 	events = get_events(block_day)
 
-		for row in events:
-			if event := get_event(row):
-				link = get_link(row)
-				pdf = get_content(link)
-				write_pdf(path, event, pdf)
+	# 	for row in events:
+	# 		if event := get_event(row):
+	# 			link = get_link(row)
+	# 			pdf = get_content(link)
+	# 			write_pdf(path, event, pdf)
 
 
 def omega_save_results(url, pool, stage=None):
 	html = get_html(url)
 	metadata = get_metadata(html, pool, stage)
-	pprint(metadata, sort_dicts=False)
-	# save_files(html, metadata)
+	# pprint(metadata, sort_dicts=False)
+	save_files(html, metadata)

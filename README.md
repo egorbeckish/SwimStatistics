@@ -24,6 +24,7 @@
  ┃ ┃ ┣ 📂results
  ┃ ┃ ┃ ┣ 📜omega_results.py
  ┃ ┃ ┃ ┣ 📜standart_results.py
+ ┃ ┃ ┃ ┣ 📜utils.py
  ┃ ┃ ┃ ┗ 📜__init__.py
  ┃ ┃ ┗ 📜__init__.py
  ┃ ┗ 📜main.py
