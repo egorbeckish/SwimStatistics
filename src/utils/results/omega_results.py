@@ -103,7 +103,7 @@ def get_events(block: BeautifulSoup):
 
 def get_event_regex(event):
 	event_regex = re.search(
-		r"(?P<sex>[a-zA-Z]+\'s)\s(?P<style>Freestyle|Backstroke|Butterfly|Breaststroke|Medley)\s(?P<distance>[\d]{2,4}m)\s+((Slowest|Fastest)\s)?(?P<stage>Heats|Semi-finals|Final|Semifinals|Heat)\s?(?P<swim_off>(?:Swim-off|Swim-Off))?", 
+		r"(?P<sex>[a-zA-Z]+\'s)\s(?P<style>Freestyle|Backstroke|Butterfly|Breaststroke|Medley)\s(?P<distance>[\d]{2,4}m)\s+(?:(?P<type_stage>Slowest|Fastest)\s)?(?P<stage>Heats|Semi-finals|Final|Semifinals|Heat)\s?(?P<swim_off>(?:Swim-off|Swim-Off))?", 
 		event
 	)
 
@@ -113,9 +113,12 @@ def get_event_regex(event):
 
 def get_event(row: BeautifulSoup):
 	event = get_event_regex(row.find("p", class_="round").text)
-
 	if event:
 		event["style"] = "IM" if event["style"] == "Medley" else event["style"].lower()
+		
+		if event["type_stage"]:
+			event["stage"] = "Heats" if event["type_stage"] == "Slowest" else "Final"
+		
 		return f"{event["distance"]} {event["style"]} {event["sex"]} {event["stage"]}"
 
 	return event
@@ -133,22 +136,22 @@ def save_files(html: BeautifulSoup, metadata):
 	block_days = get_days(html)
 	path = get_path(metadata)
 	
-	create_dirs(path)
+	create_dirs(f"{path}/pdf")
 	save_metadata(path, metadata)
 	create_regex_json(path)
 	
-	# for block_day in block_days:
-	# 	events = get_events(block_day)
+	for block_day in block_days:
+		events = get_events(block_day)
 
-	# 	for row in events:
-	# 		if event := get_event(row):
-	# 			link = get_link(row)
-	# 			pdf = get_content(link)
-	# 			write_pdf(path, event, pdf)
+		for row in events:
+			if event := get_event(row):
+				print(row.find("p", class_="round").text, event)
+				link = get_link(row)
+				pdf = get_content(link)
+				write_pdf(path, event, pdf)
 
 
 def omega_save_results(url, pool, stage=None):
 	html = get_html(url)
 	metadata = get_metadata(html, pool, stage)
-	# pprint(metadata, sort_dicts=False)
 	save_files(html, metadata)

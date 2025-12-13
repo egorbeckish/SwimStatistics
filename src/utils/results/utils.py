@@ -10,7 +10,7 @@ def create_dirs(path):
 
 
 def write_pdf(path, title, content):
-	with open(f"{CONTEST_PATH}/{path}/{title}.pdf", "wb") as file:
+	with open(f"{CONTEST_PATH}/{path}/pdf/{title}.pdf", "wb") as file:
 		file.write(content)
 
 

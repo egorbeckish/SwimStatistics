@@ -4,6 +4,7 @@ from lib import (
 	GeonamesCache
 )
 
+
 def get_stage(metadata):
 	if metadata["stage"] is None:
 		del metadata["stage"]
@@ -29,9 +30,9 @@ def get_place(metadata: dict):
 	
 	metadata.update(
 		{
-			"country": country_data.name,
 			"city": metadata["place"],
-			"alpha3": country_data.alpha3
+			"alpha3": country_data.alpha3,
+			"country": country_data.name,
 		}
 	)
 
