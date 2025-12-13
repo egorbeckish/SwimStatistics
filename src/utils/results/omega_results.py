@@ -145,7 +145,6 @@ def save_files(html: BeautifulSoup, metadata):
 
 		for row in events:
 			if event := get_event(row):
-				print(row.find("p", class_="round").text, event)
 				link = get_link(row)
 				pdf = get_content(link)
 				write_pdf(path, event, pdf)
@@ -155,3 +154,4 @@ def omega_save_results(url, pool, stage=None):
 	html = get_html(url)
 	metadata = get_metadata(html, pool, stage)
 	save_files(html, metadata)
+
