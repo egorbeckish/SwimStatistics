@@ -31,7 +31,6 @@ showSidebarNavigation = false
  ┃ ┃ ┗ 📜.env.pages
  ┃ ┣ 📜env.py
  ┃ ┗ 📜__init__.py
- ┣ 📂scripts
  ┣ 📂src
  ┃ ┣ 📂.streamlit
  ┃ ┃ ┗ 📜config.toml
@@ -43,7 +42,9 @@ showSidebarNavigation = false
  ┃ ┃ ┗ 📜load_contest.py
  ┃ ┣ 📂utils
  ┃ ┃ ┣ 📂page
- ┃ ┃ ┃ ┗ 📜validates.py
+ ┃ ┃ ┃ ┣ 📜pool.py
+ ┃ ┃ ┃ ┣ 📜validates.py
+ ┃ ┃ ┃ ┗ 📜__init__.py
  ┃ ┃ ┣ 📂results
  ┃ ┃ ┃ ┣ 📜omega_results.py
  ┃ ┃ ┃ ┣ 📜standart_results.py
@@ -54,6 +55,3 @@ showSidebarNavigation = false
  ┗ 📜README.md
 
 ```
-
-
-

@@ -1,3 +1,4 @@
+from config import CONTEST_LIST
 from lib import (
 	st,
 	datetime,
@@ -10,7 +11,8 @@ from utils import (
 	validate_input,
 	exist_city,
 	omega_save_results,
-	standart_save_results
+	standart_save_results,
+	get_pool
 )
 
 
@@ -32,7 +34,7 @@ with columns[0]:
 	with standart_load:
 		contest = st.selectbox(
 			"Contest",
-			["World Cup", "World Championship"],
+			CONTEST_LIST,
 			None,
 			key=st.session_state["widget_contest"],
 			placeholder="Choose contest...",
@@ -47,16 +49,8 @@ with columns[0]:
 				placeholder="Choose stage...",
 			)
 
-		if contest not in [None, "Olympic Games", "Univercity", "NCAA"]:
-			pool = st.selectbox(
-				"Pool",
-				["25m", "50m", "25y", "50y"],
-				None,
-				key=st.session_state["widget_standart_pool"],
-				help="m - meters, y - yard",
-				placeholder="Choose pool...",
-				disabled=False if contest else True
-			)
+		if contest:
+			pool = get_pool(contest)
 
 		place = st.text_input(
 			"Place",
@@ -74,17 +68,17 @@ with columns[0]:
 			(datetime.datetime(1896, 4, 6), datetime.datetime.now()),
 			key=st.session_state["widget_date"],
 			format="DD.MM.YYYY",
-			disabled=False if contest else True
+			disabled=False if place else True
 		)
 
-		# load_files = st.file_uploader(
-		# 	"Load files",
-		# 	accept_multiple_files=True,
-		# 	key=st.session_state["widget_file_uploader"],
-		# 	disabled=not all([contest, stage if contest == "World Cup" else True, pool, not st.session_state["widget_access_input"], date])
-		# )
+		load_files = st.file_uploader(
+			"Load files",
+			accept_multiple_files=True,
+			key=st.session_state["widget_file_uploader"],
+			disabled=not all([contest, stage if contest == "World Cup" else True, pool, not st.session_state["widget_access_input"], date])
+		 )
 
-		load_files = all([contest, stage if contest == "World Cup" else True, pool, not st.session_state["widget_access_input"], date])
+		#load_files = all([contest, stage if contest == "World Cup" else True, pool, not st.session_state["widget_access_input"], date])
 
 		if st.button(
 			"Load",
@@ -96,7 +90,8 @@ with columns[0]:
 					stage=stage,
 					pool=pool,
 					place=place,
-					date=date
+					date=date,
+					load_files=load_files
 				)
 			
 			st.session_state["widget_contest"] = uuid.uuid4()
@@ -112,8 +107,6 @@ with columns[0]:
 			st.rerun()
 	
 	with omega_load:
-		tmp_link = st.code("https://www.omegatiming.com/2025/world-aquatics-swimming-world-cup03-live-results")
-	
 		omega_link = st.text_input(
 			"Omega Link",
 			key="widget_omega_link",

@@ -1,6 +1,7 @@
-from .page.validates import (
+from .page import (
 	validate_input,
-	exist_city
+	exist_city,
+	get_pool
 )
 
 from .results import (

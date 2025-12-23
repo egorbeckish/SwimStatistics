@@ -7,9 +7,6 @@ from lib import (
 )
 
 
-CONTEST_PATH = f"{os.path.dirname(os.getcwd())}/contest"
-
-
 def load_env():
 	if st.session_state:
 		return
@@ -26,3 +23,13 @@ def load_env():
 		st.session_state[k.lower()] = v if v == "" else literal_eval(v)
 
 	st.toast("Данные получены", icon="✅")
+
+
+CONTEST_PATH = f"{os.path.dirname(os.getcwd())}/contest"
+
+CONTEST_LIST = [
+	"World Cup",
+	"World Championship",
+	"University",
+	"Olympic Game"
+]
