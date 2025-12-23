@@ -1,6 +1,6 @@
 ## SwimStatistics
 
-Create file .env.pages in ```confit\.env```
+Create file .env.pages in ```config\.env```
 
 ```
 WIDGET_CONTEST=
@@ -46,3 +46,4 @@ WIDGET_ACCESS_INPUT=True
  ┗ 📜README.md
 
 ```
+
