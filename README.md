@@ -15,6 +15,14 @@ WIDGET_ACCESS_INPUT=True
 
 ```
 
+Create folder ```.streamlit``` in ```src``` and file ```config.toml``` in ```src\.streamlit```
+
+```
+[client]
+showSidebarNavigation = false
+
+```
+
 
 ```
 📦SwimStatistics
@@ -46,5 +54,6 @@ WIDGET_ACCESS_INPUT=True
  ┗ 📜README.md
 
 ```
+
 
 
