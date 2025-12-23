@@ -1,5 +1,20 @@
 ## SwimStatistics
 
+Create file .env.pages in ```confit\.env```
+
+```
+WIDGET_CONTEST=
+WIDGET_STAGE=
+WIDGET_STANDART_POOL=
+WIDGET_OMEGA_POOL=
+WIDGET_PLACE=
+WIDGET_DATE=
+WIDGET_FILE_UPLOADER=
+WIDGET_OMEGA_LINK=
+WIDGET_ACCESS_INPUT=True
+
+```
+
 
 ```
 📦SwimStatistics
