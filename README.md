@@ -15,7 +15,7 @@ WIDGET_ACCESS_INPUT=True
 
 ```
 
-Create folder ```.streamlit``` in ```src``` and file ```config.toml``` in ```src\.streamlit```
+Create file ```config.toml``` in ```src\.streamlit```
 
 ```
 [client]
@@ -55,3 +55,4 @@ showSidebarNavigation = false
  ┗ 📜README.md
 
 ```
+
