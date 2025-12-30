@@ -12,7 +12,6 @@ WIDGET_DATE=
 WIDGET_FILE_UPLOADER=
 WIDGET_OMEGA_LINK=
 WIDGET_ACCESS_INPUT=True
-
 ```
 
 Create file ```config.toml``` in ```src\.streamlit```
@@ -20,7 +19,6 @@ Create file ```config.toml``` in ```src\.streamlit```
 ```
 [client]
 showSidebarNavigation = false
-
 ```
 
 
@@ -53,6 +51,4 @@ showSidebarNavigation = false
  ┃ ┃ ┗ 📜__init__.py
  ┃ ┗ 📜main.py
  ┗ 📜README.md
-
 ```
-
