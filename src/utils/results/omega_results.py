@@ -132,6 +132,13 @@ def get_content(link):
 	return requests.get(link).content
 
 
+def save_lenex(link, path):
+	lenex = get_content(link)
+
+	with open(f"{CONTEST_PATH}/{path}/lenex_data.lef", "wb") as file:
+		file.write(lenex)
+
+
 def save_files(html: BeautifulSoup, metadata):
 	block_days = get_days(html)
 	path = get_path(metadata)
@@ -139,15 +146,18 @@ def save_files(html: BeautifulSoup, metadata):
 	create_dirs(f"{path}/pdf")
 	save_metadata(path, metadata)
 	create_regex_json(path)
-	
-	for block_day in block_days:
-		events = get_events(block_day)
 
-		for row in events:
-			if event := get_event(row):
-				link = get_link(row)
-				pdf = get_content(link)
-				write_pdf(path, event, pdf)
+	[lenex] = [f"https://www.omegatiming.com/{cell["href"]}" for cell in html.find("div", class_="block-button").find_all("a") if "lef" in cell["href"]]
+	save_lenex(lenex, path)
+	
+	#for block_day in block_days:
+	#	events = get_events(block_day)
+
+	#	for row in events:
+	#		if event := get_event(row):
+	#			link = get_link(row)
+	#			pdf = get_content(link)
+	#			write_pdf(path, event, pdf)
 
 
 def omega_save_results(url, pool, stage=None):
