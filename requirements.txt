@@ -1,0 +1,8 @@
+streamlit
+pdfplumber
+regex
+pandas
+iso3166
+geonamescache
+python-dotenv
+bs4
