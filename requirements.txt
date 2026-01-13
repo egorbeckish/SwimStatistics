@@ -6,3 +6,4 @@ iso3166
 geonamescache
 python-dotenv
 bs4
+psutil
