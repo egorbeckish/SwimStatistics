@@ -150,14 +150,14 @@ def save_files(html: BeautifulSoup, metadata):
 	[lenex] = [f"https://www.omegatiming.com/{cell["href"]}" for cell in html.find("div", class_="block-button").find_all("a") if "lef" in cell["href"]]
 	save_lenex(lenex, path)
 	
-	#for block_day in block_days:
-	#	events = get_events(block_day)
+	for block_day in block_days:
+		events = get_events(block_day)
 
-	#	for row in events:
-	#		if event := get_event(row):
-	#			link = get_link(row)
-	#			pdf = get_content(link)
-	#			write_pdf(path, event, pdf)
+		for row in events:
+			if event := get_event(row):
+				link = get_link(row)
+				pdf = get_content(link)
+				write_pdf(path, event, pdf)
 
 
 def omega_save_results(url, pool, stage=None):
