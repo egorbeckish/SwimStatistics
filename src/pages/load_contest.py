@@ -1,19 +1,10 @@
 from config import CONTEST_LIST
+from utils import *
 from lib import (
 	st,
 	datetime,
 	uuid,
 	pprint
-)
-
-
-from utils import (
-	validate_input,
-	exist_city,
-	omega_save_results,
-	standart_save_results,
-	get_standart_pool,
-	get_omega_pool
 )
 
 
@@ -55,7 +46,7 @@ with columns[0]:
 
 		place = st.text_input(
 			"Place",
-			key=st.session_state["widget_place"],
+			key="widget_place",
 			on_change=exist_city,
 			args=(
 				"widget_place",
@@ -67,7 +58,11 @@ with columns[0]:
 		date = st.date_input(
 			"Date",
 			(datetime.datetime(1896, 4, 6), datetime.datetime.now()),
-			key=st.session_state["widget_date"],
+			key="widget_date",
+			on_change=correct_date,
+			args=(
+				"widget_date",
+			),
 			format="DD.MM.YYYY",
 			disabled=False if contest else True
 		)
@@ -76,10 +71,9 @@ with columns[0]:
 			"Load files",
 			accept_multiple_files=True,
 			key=st.session_state["widget_file_uploader"],
-			disabled=not all([contest, stage if contest == "World Cup" else True, pool, not st.session_state["widget_access_input"], date])
+			disabled=not all([contest, stage if contest == "World Cup" else True, pool, st.session_state["widget_access_input"], st.session_state["widget_access_date"]])
 		 )
 
-		#load_files = all([contest, stage if contest == "World Cup" else True, pool, not st.session_state["widget_access_input"], date])
 
 		if st.button(
 			"Load",
@@ -98,19 +92,20 @@ with columns[0]:
 			st.session_state["widget_contest"] = uuid.uuid4()
 			st.session_state["widget_stage"] = uuid.uuid4()
 			st.session_state["widget_standart_pool"] = uuid.uuid4()
-			st.session_state["widget_date"] = uuid.uuid4()
 			st.session_state["widget_file_uploader"] = uuid.uuid4()
 			st.session_state["widget_access_input"] = True
 
 			del st.session_state["widget_place"]
+			del st.session_state["widget_date"]
 			st.session_state.widget_place = ""
+			st.session_state.widget_date = ""
 			
 			st.rerun()
 	
 	with omega_load:
 		omega_link = st.text_input(
 			"Omega Link",
-			key=st.session_state["widget_omega_link"],
+			key="widget_omega_link",
 			on_change=validate_input,
 			args=(
 				"widget_omega_link",
@@ -132,7 +127,7 @@ with columns[0]:
 		
 		if st.button(
 			"Get",
-			disabled=not all([not st.session_state["widget_access_input"], stage if "cup" in omega_link else True, pool])
+			disabled=not all([st.session_state["widget_access_input"], stage if "cup" in omega_link else True, pool])
 		):
 			
 			with st.spinner(show_time=True):
@@ -144,7 +139,6 @@ with columns[0]:
 			
 			st.session_state["widget_access_input"] = True
 			st.session_state["widget_stage"] = uuid.uuid4()
-			st.session_state["widget_pool"] = uuid.uuid4()
 			st.session_state["widget_omega_pool"] = uuid.uuid4()
 			
 			st.rerun()
