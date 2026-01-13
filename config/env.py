@@ -3,7 +3,8 @@ from lib import (
 	load_dotenv,
 	dotenv_values,
 	st,
-	literal_eval
+	literal_eval,
+	uuid
 )
 
 
@@ -20,7 +21,7 @@ def load_env():
 
 
 	for k, v in envirements.items():
-		st.session_state[k.lower()] = v if v == "" else literal_eval(v)
+		st.session_state[k.lower()] = uuid.uuid4() if v == "" else literal_eval(v)
 
 	st.toast("Данные получены", icon="✅")
 

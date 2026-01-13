@@ -12,7 +12,8 @@ from utils import (
 	exist_city,
 	omega_save_results,
 	standart_save_results,
-	get_pool
+	get_standart_pool,
+	get_omega_pool
 )
 
 
@@ -23,9 +24,9 @@ st.set_page_config(
 
 columns = st.columns([.9, .1], gap="large")
 
-
 with columns[0]:
 	st.title("Load Contest")
+	
 	stage = None
 	pool = None
 
@@ -50,11 +51,11 @@ with columns[0]:
 			)
 
 		if contest:
-			pool = get_pool(contest)
+			pool = get_standart_pool(contest)
 
 		place = st.text_input(
 			"Place",
-			key="widget_place",
+			key=st.session_state["widget_place"],
 			on_change=exist_city,
 			args=(
 				"widget_place",
@@ -68,7 +69,7 @@ with columns[0]:
 			(datetime.datetime(1896, 4, 6), datetime.datetime.now()),
 			key=st.session_state["widget_date"],
 			format="DD.MM.YYYY",
-			disabled=False if place else True
+			disabled=False if contest else True
 		)
 
 		load_files = st.file_uploader(
@@ -109,7 +110,7 @@ with columns[0]:
 	with omega_load:
 		omega_link = st.text_input(
 			"Omega Link",
-			key="widget_omega_link",
+			key=st.session_state["widget_omega_link"],
 			on_change=validate_input,
 			args=(
 				"widget_omega_link",
@@ -127,14 +128,7 @@ with columns[0]:
 				placeholder="Choose stage...",
 			)
 
-		pool = st.selectbox(
-			"Pool (meters)",
-			["25m", "50m"],
-			None,
-			key=st.session_state["widget_omega_pool"],
-			placeholder="Choose pool...",
-			disabled=False if omega_link else True
-		)
+		pool = get_omega_pool(omega_link)
 		
 		if st.button(
 			"Get",
